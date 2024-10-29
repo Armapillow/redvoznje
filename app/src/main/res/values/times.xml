@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="set_time_relative">
+        <item>0</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </integer-array>
+</resources>

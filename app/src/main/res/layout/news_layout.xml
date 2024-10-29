@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/blue" >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vesti"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+
+        <ImageButton
+            android:id="@+id/buttonRefreshNews"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_refresh_white_24dp"
+            android:background="@null"
+            android:layout_gravity="end"
+            android:contentDescription="refresh"
+            android:layout_marginEnd="10dp" />
+
+    </Toolbar>
+
+    <TextView
+        android:id="@+id/textViewNewsURL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="link ka vestima"
+        android:padding="5dp"
+        android:gravity="end"
+        android:textStyle="italic"
+        android:textColor="#0000EE"
+        android:visibility="visible" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/textViewDeleteLater"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="30dp" />-->
+    <ListView
+        android:id="@+id/listViewNewsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:layout_marginTop="5dp" />
+
+</LinearLayout>

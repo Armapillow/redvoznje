@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/blue">
+
+
+
+            <TextView
+                android:id="@+id/textViewTimeTableTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Pocetna - krajnja stanica"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_gravity="center" />
+
+
+
+
+        <ImageButton
+            android:id="@+id/buttonRefreshTimetable"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:background="@null"
+            android:contentDescription="osvezi"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_refresh_white_24dp" />
+
+
+    </Toolbar>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timetable_link_textview"
+        android:text="@string/timetable_link"
+        android:padding="7dp"
+        android:layout_marginEnd="7dp"
+        android:textSize="15sp"
+        android:textColor="@color/blue"
+        android:textStyle="italic"
+        android:gravity="end"
+        />
+
+    <ListView
+        android:id="@+id/listViewTimeTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp" />
+
+</LinearLayout>
