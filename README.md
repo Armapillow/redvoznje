@@ -1,8 +1,12 @@
 ## Redvoznje
 
-*opis...*
+Aplikacija koja prikazuje red vožnje vozova Železnice Srbije.
 
-*screenshots...*
+<p align="middle">
+<img src="screenshots/mainscreen.jpg" width="32%">
+<img src="screenshots/news.jpg" width="32%">
+<img src="screenshots/timetable.jpg" width="32%">
+</p>
 
 ## TODO
 
