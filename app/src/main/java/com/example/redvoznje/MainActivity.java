@@ -50,6 +50,8 @@ import okhttp3.Response;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String APP_DBG = "REDVOZNJE_DBG";
     private static final String NEWS_URL = "https://www.srbvoz.rs/wp-json/wp/v2/info_post";
     private static final String URL_TIMETABLE_BASE = "https://w3.srbvoz.rs/redvoznje/direktni/";
 
@@ -79,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO: temporarily
     String previewText;
-    private TextView helperTextView;
     private TextView timePicker;
     CustomTime time;
     ArrayList<HistoryEntry> history = new ArrayList<>();
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnNews = findViewById(R.id.newsButton);
         btnNews.setOnClickListener(v -> {
             if (cachedJSONString != null) {
-                Log.d("MOJA", "Velicina u bajtovima: " + cachedJSONString.length());
+                Log.d(APP_DBG, "Velicina u bajtovima: " + cachedJSONString.length());
                 startNewsActivityWithJSON(cachedJSONString);
             } else {
                 downloadNewsJSON();
@@ -112,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
         textViewFrom = findViewById(R.id.textViewFrom);
         textViewTo = findViewById(R.id.textViewTo);
         timePicker = findViewById(R.id.buttonTimePicker);
-
-        helperTextView = findViewById(R.id.textViewHelper);
 
         historyListView = findViewById(R.id.historyList);
 
@@ -293,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         previewText = fromStation + " (" + fromStationID + ")" + " --> " + toStation + " (" + toStationID + ")";
+        Log.d(APP_DBG, "STATIONS: " + previewText);
         timeTableTitle = fromStation + "  –  " + toStation;
 
 
@@ -364,15 +364,11 @@ public class MainActivity extends AppCompatActivity {
 
         String date = Formats.getFormatForUrl(time);
 
-        Log.d("DATUM", date);
-        previewText += "\n\n" + date + "\n\n history size: " + history.size();
-        helperTextView.setText(previewText);
-
         baseURL.append(date).append("/sr");
         String urlString = baseURL.toString().replace(" ", "%20");
 
-        Log.d("DATUM", baseURL.toString());
-        Log.d("DATUM", urlString);
+        Log.d(APP_DBG, "DATE: " + date);
+        Log.d(APP_DBG, "URL: " + urlString);
 
 
         return urlString;
