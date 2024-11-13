@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.example.redvoznje.helpers.CustomTime;
 import com.example.redvoznje.helpers.Formats;
 import com.example.redvoznje.history.HistoryAdapter;
+import com.example.redvoznje.history.HistoryDatabase;
 import com.example.redvoznje.history.HistoryEntry;
 import com.example.redvoznje.news.NewsActivity;
 import com.example.redvoznje.stations.Station;
@@ -35,12 +37,9 @@ import com.example.redvoznje.stations.StationAdapter;
 import com.example.redvoznje.stations.StationFillAll;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Queue;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -74,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private String toStation;
     private TextView tvSearch;
 
+    private HistoryDatabase historyDatabase;
+
     private TextView buttonDepartureTime;
 
     String timeTableTitle = "";
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         stationList = StationFillAll.fillAllStation();
+        historyDatabase = new HistoryDatabase(MainActivity.this);
 
 
         tvSearch = findViewById(R.id.btnSearch);
@@ -296,12 +298,12 @@ public class MainActivity extends AppCompatActivity {
         timeTableTitle = fromStation + "  –  " + toStation;
 
 
-        // Popuni istoriju
-        HistoryEntry entry = new HistoryEntry(fromStation, fromStationID, toStation, toStationID);
-        history.add(entry);
-        HistoryAdapter historyAdapter = new HistoryAdapter(MainActivity.this, R.layout.favorite_station_entry, history);
-        historyListView.setAdapter(historyAdapter);
+        // NOTE: history
+        historyDatabase.insert(fromStationID, toStationID, fromStation, toStation);
 
+        Cursor cursor = historyDatabase.selectAllStations();
+        HistoryAdapter adapter = new HistoryAdapter(this, cursor);
+        historyListView.setAdapter(adapter);
 
 
         String url = buildUrl(fromStation, toStation);
@@ -436,4 +438,10 @@ public class MainActivity extends AppCompatActivity {
     private final OnClickListener departureListener = v -> {
 //      final AlertDialog builder = new AlertDialog();
     };
+
+    protected void onDestroy () {
+        super.onDestroy();
+
+         historyDatabase.deleteAll();
+    }
 }
