@@ -3,6 +3,9 @@ package com.example.redvoznje;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -85,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView timePicker;
     CustomTime time;
     ArrayList<HistoryEntry> history = new ArrayList<>();
-    ListView historyListView;
+    RecyclerView recyclerHistory;
+    HistoryAdapter historyAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
         textViewTo = findViewById(R.id.textViewTo);
         timePicker = findViewById(R.id.buttonTimePicker);
 
-        historyListView = findViewById(R.id.historyList);
+        recyclerHistory = findViewById(R.id.recycleViewHistory);
+        // NOTE: Pomocu ovoga recycler view zna kako da poredja elemente unutar njega
+        recyclerHistory.setLayoutManager(new LinearLayoutManager(this));
+        recyclerHistory.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
 
         ImageView swapImgView = findViewById(R.id.swapButton);
@@ -302,8 +309,8 @@ public class MainActivity extends AppCompatActivity {
         historyDatabase.insert(fromStationID, toStationID, fromStation, toStation);
 
         Cursor cursor = historyDatabase.selectAllStations();
-        HistoryAdapter adapter = new HistoryAdapter(this, cursor);
-        historyListView.setAdapter(adapter);
+        historyAdapter = new HistoryAdapter(this, cursor);
+        recyclerHistory.setAdapter(historyAdapter);
 
 
         String url = buildUrl(fromStation, toStation);

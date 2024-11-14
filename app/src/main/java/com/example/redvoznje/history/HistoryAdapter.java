@@ -8,30 +8,66 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.redvoznje.R;
 
-public class HistoryAdapter extends CursorAdapter {
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+    private final Context context;
+    private Cursor cursor;
 
     public HistoryAdapter(Context context, Cursor cursor) {
-        super(context, cursor, 0);
+        this.context = context;
+        this.cursor = cursor;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(this.context).inflate(R.layout.favorite_station_entry, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.favorite_station_entry, parent, false);
-    }
-
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-
-        TextView favoriteFromStation = view.findViewById(R.id.favoriteFromStation);
-        TextView favoriteToStation   = view.findViewById(R.id.favoriteToStation);
-
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        this.cursor.moveToPosition(position);
         String fromName = cursor.getString(cursor.getColumnIndexOrThrow(HistoryDatabase.ROW_FROM_STATION));
         String toName = cursor.getString(cursor.getColumnIndexOrThrow(HistoryDatabase.ROW_TO_STATION));
 
-        favoriteFromStation.setText(fromName);
-        favoriteToStation.setText(toName);
+        holder.fromStation.setText(fromName);
+        holder.toStation.setText(toName);
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return this.cursor.getCount();
+    }
+
+
+    // FIXME: drugaciji pristup nadji
+    public void swapCursor(Cursor newCursor) {
+        if (this.cursor != null) {
+            this.cursor.close(); // Close the old cursor
+        }
+        this.cursor = newCursor;
+        if (newCursor != null) {
+            notifyDataSetChanged(); // Notify adapter of data change
+        }
+    }
+
+    // Za svaki pojedinacni element u recycle view-u
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView fromStation;
+        TextView toStation;
+
+        public ViewHolder(View view) {
+            super(view);
+            fromStation = view.findViewById(R.id.favoriteFromStation);
+            toStation = view.findViewById(R.id.favoriteToStation);
+        }
+
     }
 
 
