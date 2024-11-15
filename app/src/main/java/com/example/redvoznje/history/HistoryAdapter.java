@@ -1,17 +1,23 @@
 package com.example.redvoznje.history;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.redvoznje.MainActivity;
 import com.example.redvoznje.R;
+import com.example.redvoznje.helpers.PrintDB;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
     private final Context context;
@@ -55,6 +61,28 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         if (newCursor != null) {
             notifyDataSetChanged(); // Notify adapter of data change
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (this.cursor != null && cursor.moveToPosition(position)) {
+            return this.cursor.getLong(this.cursor.getColumnIndexOrThrow("_id"));
+        }
+
+        return -1;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void removeFromPosition(final long itemID) {
+        Log.d("itemID = ", String.valueOf(itemID));
+
+        SQLiteDatabase db = HistoryDatabase.database();
+        PrintDB.printDB(db);
+        db.delete(HistoryDatabase.TABLE_HISTORY, "_id = ?", new String[]{String.valueOf(itemID)});
+        this.cursor = db.query(HistoryDatabase.TABLE_HISTORY, null, null, null, null, null, null);
+
+        notifyDataSetChanged();
+
     }
 
     // Za svaki pojedinacni element u recycle view-u

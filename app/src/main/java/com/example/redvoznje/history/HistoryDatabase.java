@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class HistoryDatabase {
-    private final SQLiteDatabase db;
-    private static final String TABLE_HISTORY = "history";
+    private static SQLiteDatabase db = null;
+    public static final String TABLE_HISTORY = "history";
     public static final String ROW_ID = "_id";
     public static final String ROW_FROM_ID = "fromID";
     public static final String ROW_TO_ID = "toID";
@@ -46,8 +46,16 @@ public class HistoryDatabase {
         db.close();
     }
 
+    public void deleteEntry(final String id) {
+        db.delete(HistoryDatabase.TABLE_HISTORY, "_id = ?", new String[]{id});
+    }
 
-    private class CustomHistoryHelper extends SQLiteOpenHelper {
+    public static SQLiteDatabase database() {
+
+        return db;
+    }
+
+    private static class CustomHistoryHelper extends SQLiteOpenHelper {
         private static final String DB_NAME = "redvoznje";
         private static final int    DB_VERSION = 1;
         private static final String DB_CREATE = "CREATE TABLE " + TABLE_HISTORY + " ("

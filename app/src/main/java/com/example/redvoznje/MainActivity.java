@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ import com.example.redvoznje.helpers.Formats;
 import com.example.redvoznje.history.HistoryAdapter;
 import com.example.redvoznje.history.HistoryDatabase;
 import com.example.redvoznje.history.HistoryEntry;
+import com.example.redvoznje.history.SwipeToDeleteHistory;
 import com.example.redvoznje.news.NewsActivity;
 import com.example.redvoznje.stations.Station;
 import com.example.redvoznje.stations.StationAdapter;
@@ -124,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
         // NOTE: Pomocu ovoga recycler view zna kako da poredja elemente unutar njega
         recyclerHistory.setLayoutManager(new LinearLayoutManager(this));
         recyclerHistory.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        // TODO: kako da ostavim ovde? Jel treba da stavim historyAdapter = new ....
+        //       ali da li ce onda biti uopste popunjena istorija jer ce kursor biti 0??
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteHistory(historyAdapter));
+//        itemTouchHelper.attachToRecyclerView(recyclerHistory);
 
 
         ImageView swapImgView = findViewById(R.id.swapButton);
@@ -311,6 +318,8 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = historyDatabase.selectAllStations();
         historyAdapter = new HistoryAdapter(this, cursor);
         recyclerHistory.setAdapter(historyAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteHistory(historyAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerHistory);
 
 
         String url = buildUrl(fromStation, toStation);
